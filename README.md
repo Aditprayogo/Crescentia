@@ -1,6 +1,6 @@
-# shop_application
+# Castlevania
 
-A new Flutter project.
+Shop Application using flutter.
 
 ## Getting Started
 
