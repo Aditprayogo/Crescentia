@@ -13,8 +13,7 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //   menerima listener dari product provider yang dikirim melalui product item
-    final product = Provider.of<Product>(context);
-
+    final product = Provider.of<Product>(context, listen: false);
     //   agar mengatur border radius , jadi menggunaan clipreact
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -35,14 +34,18 @@ class ProductItem extends StatelessWidget {
         // mengatur bagian bawah grid
         footer: GridTileBar(
           backgroundColor: Colors.black87,
-          leading: IconButton(
-            icon: Icon(
-              product.isFavorite ? Icons.favorite : Icons.favorite_border,
+          //   Widget selalu update kalau ada prubahan di dalam product
+          //   bakal manggil method yang sesui di product
+          leading: Consumer<Product>(
+            builder: (ctx, product, _) => IconButton(
+              icon: Icon(
+                product.isFavorite ? Icons.favorite : Icons.favorite_border,
+              ),
+              onPressed: () {
+                product.toggleFavoriteStatus();
+              },
+              color: Theme.of(context).accentColor,
             ),
-            onPressed: () {
-              product.toggleFavoriteStatus();
-            },
-            color: Theme.of(context).accentColor,
           ),
           title: Text(
             product.title,
