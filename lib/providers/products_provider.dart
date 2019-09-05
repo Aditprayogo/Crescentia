@@ -38,8 +38,14 @@ class Products extends ChangeNotifier {
     ),
   ];
 
+  var _showFavoriteOnly = false;
+
   List<Product> get items {
     return [..._items];
+  }
+
+  List<Product> get favoriteProducts {
+    return _items.where((prod) => prod.isFavorite).toList();
   }
 
   void addProduct() {
