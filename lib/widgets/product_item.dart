@@ -41,7 +41,7 @@ class ProductItem extends StatelessWidget {
           //   Widget selalu update kalau ada prubahan di dalam product
           //   bakal manggil method yang sesui di product
           leading: Consumer<Product>(
-            builder: (ctx, product, _) => IconButton(
+            builder: (ctx, product, ch) => IconButton(
               icon: Icon(
                 product.isFavorite ? Icons.favorite : Icons.favorite_border,
               ),
@@ -57,10 +57,17 @@ class ProductItem extends StatelessWidget {
             style: TextStyle(fontSize: 14),
             textAlign: TextAlign.center,
           ),
+          //   untuk cart item
           trailing: IconButton(
             icon: Icon(Icons.shopping_cart),
             onPressed: () {
-              cart.addItem(product.id, product.title, product.price);
+              // menambahkan item ke cart state
+              cart.addItem(
+                product.id,
+                product.title,
+                product.price,
+                product.imageUrl,
+              );
             },
             color: Theme.of(context).accentColor,
           ),

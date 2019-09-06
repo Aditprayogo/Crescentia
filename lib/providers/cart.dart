@@ -5,12 +5,14 @@ class CartItem {
   final String title;
   final int quantity;
   final double price;
+  final String imageProduct;
 
   CartItem({
     @required this.id,
     @required this.title,
     @required this.quantity,
     @required this.price,
+    @required this.imageProduct,
   });
 }
 
@@ -26,7 +28,15 @@ class Cart extends ChangeNotifier {
     return _items.length;
   }
 
-  void addItem(String productId, String title, double price) {
+  double get totalAmountCart {
+    var total = 0.0;
+    _items.forEach((key, cartItem) {
+      total = total + cartItem.price * cartItem.quantity;
+    });
+    return total;
+  }
+
+  void addItem(String productId, String title, double price, String image) {
     //   jika sudah ada
     if (_items.containsKey(productId)) {
       //add key / change quantity
@@ -37,8 +47,10 @@ class Cart extends ChangeNotifier {
           title: existingItem.title,
           price: existingItem.price,
           quantity: existingItem.quantity + 1,
+          imageProduct: existingItem.imageProduct,
         ),
       );
+      //   jika data blm ada
     } else {
       _items.putIfAbsent(
         productId,
@@ -47,6 +59,7 @@ class Cart extends ChangeNotifier {
           title: title,
           price: price,
           quantity: 1,
+          imageProduct: image,
         ),
       );
     }
