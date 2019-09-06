@@ -38,6 +38,7 @@ class Cart extends ChangeNotifier {
 
   void addItem(String productId, String title, double price, String image) {
     //   jika sudah ada
+    // key
     if (_items.containsKey(productId)) {
       //add key / change quantity
       _items.update(
@@ -63,6 +64,11 @@ class Cart extends ChangeNotifier {
         ),
       );
     }
+    notifyListeners();
+  }
+
+  void removeItem(String productId) {
+    _items.remove(productId);
     notifyListeners();
   }
 }
