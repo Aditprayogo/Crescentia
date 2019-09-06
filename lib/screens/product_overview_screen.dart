@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_application/providers/cart.dart';
 import 'package:shop_application/providers/products_provider.dart';
+import 'package:shop_application/widgets/badge.dart';
 import 'package:shop_application/widgets/products_grid.dart';
 
 import '../widgets/product_item.dart';
@@ -25,6 +27,22 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
         title: Text('Caslevania'),
         backgroundColor: Colors.green,
         actions: <Widget>[
+          // mengatur badge cart
+          //   memakai consumer berarti widget ini saja yang rebuild
+
+          Consumer<Cart>(
+            builder: (ctx, cart, ch) => Badge(
+              child: ch,
+              value: cart.itemCount.toString(),
+            ),
+            child: IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.shopping_cart,
+              ),
+            ),
+          ),
+          // mengatur pop up menu buttom
           PopupMenuButton(
             onSelected: (FilterOption selectedValue) {
               setState(() {
@@ -46,7 +64,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
               ),
             ],
             icon: Icon(Icons.more_vert),
-          )
+          ),
         ],
       ),
       body: ProductsGrid(_showOnlyFavoriteData),

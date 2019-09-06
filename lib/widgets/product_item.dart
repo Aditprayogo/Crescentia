@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_application/providers/cart.dart';
 import 'package:shop_application/providers/product.dart';
 import 'package:shop_application/screens/product_detail_screen.dart';
 
@@ -14,6 +15,9 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     //   menerima listener dari product provider yang dikirim melalui product item
     final product = Provider.of<Product>(context, listen: false);
+
+    final cart = Provider.of<Cart>(context, listen: false);
+
     //   agar mengatur border radius , jadi menggunaan clipreact
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -55,7 +59,9 @@ class ProductItem extends StatelessWidget {
           ),
           trailing: IconButton(
             icon: Icon(Icons.shopping_cart),
-            onPressed: () {},
+            onPressed: () {
+              cart.addItem(product.id, product.title, product.price);
+            },
             color: Theme.of(context).accentColor,
           ),
         ),
