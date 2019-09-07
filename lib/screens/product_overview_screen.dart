@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_application/icons/shop_cart_icons.dart';
 import 'package:shop_application/providers/cart.dart';
 import 'package:shop_application/providers/products_provider.dart';
 import 'package:shop_application/screens/cart_screen.dart';
+import 'package:shop_application/widgets/app_drawer.dart';
 import 'package:shop_application/widgets/badge.dart';
 import 'package:shop_application/widgets/products_grid.dart';
-import 'package:shop_application/widgets/shop_cart_icons.dart';
 
 import '../widgets/product_item.dart';
 
@@ -26,7 +27,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Caslevania'),
+        title: Text('Crescentia'),
         backgroundColor: Colors.green,
         actions: <Widget>[
           // mengatur badge cart
@@ -70,6 +71,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           ),
         ],
       ),
+      drawer: AppDrawer(),
       body: ProductsGrid(_showOnlyFavoriteData),
     );
   }

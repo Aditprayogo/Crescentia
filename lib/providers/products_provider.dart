@@ -25,7 +25,7 @@ class Products extends ChangeNotifier {
       id: 'p3',
       title: 'Macbook',
       description: 'Macbook pro',
-      price: 9999.99,
+      price: 450.99,
       imageUrl:
           'https://cdnblob.moshi.com/uploadedfiles/photo/v3/productImages/791/01.jpg',
     ),
