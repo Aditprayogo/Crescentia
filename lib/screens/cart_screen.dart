@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_application/providers/cart.dart';
 import 'package:shop_application/providers/cart.dart' as prefix0;
+import 'package:shop_application/providers/orders.dart';
 
 import '../widgets/cart_item.dart';
 
@@ -54,7 +55,15 @@ class CartScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        //   buat menconver ke list , jadi di tambahin values
+                        Provider.of<Orders>(context, listen: false).addOrder(
+                          cart.items.values.toList(),
+                          cart.totalAmountCart,
+                        );
+
+                        cart.clear();
+                      },
                       textColor: Theme.of(context).primaryTextTheme.title.color,
                       child: Text('Order Now'),
                     )

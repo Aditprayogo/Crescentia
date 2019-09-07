@@ -31,7 +31,7 @@ class ProductItem extends StatelessWidget {
         ),
         // mengatur bagian bawah grid
         footer: GridTileBar(
-          backgroundColor: Colors.black87,
+          backgroundColor: Colors.black54,
           //   Widget selalu update kalau ada prubahan di dalam product
           //   bakal manggil method yang sesui di product
           leading: Consumer<Product>(
@@ -47,8 +47,8 @@ class ProductItem extends StatelessWidget {
           ),
           title: Text(
             product.title,
-            maxLines: 5,
-            style: TextStyle(fontSize: 14),
+            maxLines: 2,
+            style: TextStyle(fontSize: 12),
             textAlign: TextAlign.center,
           ),
           //   untuk cart item

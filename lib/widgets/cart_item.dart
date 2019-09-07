@@ -30,20 +30,19 @@ class CartItemWidget extends StatelessWidget {
         ),
         //   Mengatur icon
         padding: EdgeInsets.only(right: 10),
+        alignment: Alignment.centerRight,
         color: Colors.red,
         child: Icon(
           Icons.delete,
           size: 40,
           color: Colors.white,
         ),
-        alignment: Alignment.centerRight,
       ),
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
         Provider.of<Cart>(context, listen: false).removeItem(productId);
       },
       //   end direction
-
       //   Card
       child: Container(
         width: double.infinity,

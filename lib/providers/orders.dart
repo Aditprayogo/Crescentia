@@ -23,7 +23,7 @@ class Orders extends ChangeNotifier {
     return [..._orders];
   }
 
-  void orderNow(List<CartItem> cartProduct, double total) {
+  void addOrder(List<CartItem> cartProduct, double total) {
     _orders.insert(
       0,
       OrderItem(
