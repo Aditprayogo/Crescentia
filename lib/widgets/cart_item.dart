@@ -48,7 +48,6 @@ class CartItemWidget extends StatelessWidget {
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.symmetric(horizontal: 10),
-        height: 100,
         child: Card(
           elevation: 2,
           margin: EdgeInsets.symmetric(
@@ -57,15 +56,8 @@ class CartItemWidget extends StatelessWidget {
           ),
           child: ListTile(
             //   Image
-            leading: Container(
-              padding: EdgeInsets.all(4),
-              height: 70,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20),
-                ),
-              ),
-              //   image
+            leading: FittedBox(
+              fit: BoxFit.contain,
               child: Image.network(imageUrl),
             ),
             title: Text(title),

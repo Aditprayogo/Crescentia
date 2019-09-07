@@ -5,12 +5,6 @@ import 'package:shop_application/providers/product.dart';
 import 'package:shop_application/screens/product_detail_screen.dart';
 
 class ProductItem extends StatelessWidget {
-//   final String id;
-//   final String title;
-//   final String imageUrl;
-
-//   ProductItem({this.id, this.title, this.imageUrl});
-
   @override
   Widget build(BuildContext context) {
     //   menerima listener dari product provider yang dikirim melalui product item
