@@ -70,6 +70,10 @@ flutter:
     - family: Anton
       fonts:
         - asset: assets/fonts/Anton-Regular.ttf
+
+    - family: Shop_cart
+      fonts:
+        - asset: assets/fonts/Shop_cart.ttf
   #       
   #
   # For details regarding fonts from package dependencies,

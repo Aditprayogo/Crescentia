@@ -5,6 +5,7 @@ import 'package:shop_application/providers/products_provider.dart';
 import 'package:shop_application/screens/cart_screen.dart';
 import 'package:shop_application/widgets/badge.dart';
 import 'package:shop_application/widgets/products_grid.dart';
+import 'package:shop_application/widgets/shop_cart_icons.dart';
 
 import '../widgets/product_item.dart';
 
@@ -40,7 +41,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                 Navigator.of(context).pushNamed(CartScreen.routeName);
               },
               icon: Icon(
-                Icons.shopping_cart,
+                Shop_cart.basket,
               ),
             ),
           ),
