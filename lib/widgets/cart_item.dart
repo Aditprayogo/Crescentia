@@ -60,7 +60,7 @@ class CartItemWidget extends StatelessWidget {
               child: Image.network(imageUrl),
             ),
             title: Text(title),
-            subtitle: Text('Total: \$${(price * quantity).toStringAsFixed(1)}'),
+            subtitle: Text('Total: \$${(price * quantity).toStringAsFixed(0)}'),
             trailing: Text('${quantity}x'),
           ),
         ),
