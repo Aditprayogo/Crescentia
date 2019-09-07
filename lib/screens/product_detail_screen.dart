@@ -11,12 +11,38 @@ class ProductDetailScreen extends StatelessWidget {
 
     // listen
     // agar kalau misal kita menambah product di Product listener , widget ini tidak rebuild
-    final loadedProduct = Provider.of<Products>(context, listen: false)
-        .findById(productId); //(method yang sudah ada di products providers)
+    final loadedProduct = Provider.of<Products>(
+      context,
+      listen: false,
+    ).findById(productId);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(loadedProduct.title),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              height: 300,
+              child: Image.network(
+                loadedProduct.imageUrl,
+                fit: BoxFit.cover,
+              ),
+            ),
+            // end container
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              child: Text(
+                '\$${loadedProduct.price}',
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

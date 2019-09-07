@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_application/providers/cart.dart';
 
-class CartItems extends StatelessWidget {
+class CartItemWidget extends StatelessWidget {
   final String id;
   final double price;
   final int quantity;
@@ -10,7 +10,7 @@ class CartItems extends StatelessWidget {
   final String imageUrl;
   final String productId;
 
-  CartItems({
+  CartItemWidget({
     this.id,
     this.price,
     this.quantity,
@@ -40,7 +40,7 @@ class CartItems extends StatelessWidget {
       ),
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
-        Provider.of<Cart>(context).removeItem(productId);
+        Provider.of<Cart>(context, listen: false).removeItem(productId);
       },
       //   end direction
 
