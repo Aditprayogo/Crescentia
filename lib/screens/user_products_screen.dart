@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_application/providers/products_provider.dart';
+import 'package:shop_application/screens/new_product_screen.dart';
 import 'package:shop_application/widgets/app_drawer.dart';
 import 'package:shop_application/widgets/user_products_item.dart';
 
@@ -19,6 +20,9 @@ class UserProductsScreen extends StatelessWidget {
             icon: Icon(Icons.add),
             onPressed: () {
               // ...
+              Navigator.of(context).pushNamed(
+                NewProductScreen.routeName,
+              );
             },
           ),
         ],
