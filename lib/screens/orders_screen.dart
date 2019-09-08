@@ -13,7 +13,7 @@ class OrdersScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'your orders',
+          'Your orders',
         ),
       ),
       drawer: AppDrawer(),

@@ -42,9 +42,12 @@ class CartItemWidget extends StatelessWidget {
       direction: DismissDirection.endToStart,
       confirmDismiss: (direction) {
         //   Dialog Box
-        showDialog(
+        return showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
             title: Text('Remove Item'),
             content: SingleChildScrollView(
               child: ListBody(
@@ -58,10 +61,10 @@ class CartItemWidget extends StatelessWidget {
                 shape: StadiumBorder(),
                 child: Text('Confirm'),
                 onPressed: () {
-                  Provider.of<Cart>(context, listen: false).removeItem(
-                    productId,
-                  );
-                  Navigator.of(context).pop();
+                  //   Provider.of<Cart>(context, listen: false).removeItem(
+                  //     productId,
+                  //   );
+                  Navigator.of(ctx).pop(true);
                 },
                 color: Colors.green,
               ),
@@ -69,7 +72,7 @@ class CartItemWidget extends StatelessWidget {
                 shape: StadiumBorder(),
                 color: Theme.of(context).accentColor,
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(ctx).pop(false);
                 },
                 child: Text('Cancel'),
               )
@@ -79,7 +82,7 @@ class CartItemWidget extends StatelessWidget {
         //   end Dialog Box
       },
       onDismissed: (direction) {
-        Provider.of<Cart>(context, listen: false).removeItem(productId);
+        Provider.of<Cart>(context).removeItem(productId);
       },
       //   end direction
       //   Card
@@ -87,6 +90,9 @@ class CartItemWidget extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           elevation: 2,
           margin: EdgeInsets.symmetric(
             horizontal: 4,
@@ -94,9 +100,8 @@ class CartItemWidget extends StatelessWidget {
           ),
           child: ListTile(
             //   Image
-            leading: FittedBox(
-              fit: BoxFit.contain,
-              child: Image.network(imageUrl),
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(imageUrl),
             ),
             title: Text(title),
             subtitle: Text('Total: \$${(price * quantity).toStringAsFixed(0)}'),
