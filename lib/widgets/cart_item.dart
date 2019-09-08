@@ -38,7 +38,46 @@ class CartItemWidget extends StatelessWidget {
           color: Colors.white,
         ),
       ),
+
       direction: DismissDirection.endToStart,
+      confirmDismiss: (direction) {
+        //   Dialog Box
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text('Remove Item'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('Are You Sure Want To Delete ?'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                shape: StadiumBorder(),
+                child: Text('Confirm'),
+                onPressed: () {
+                  Provider.of<Cart>(context, listen: false).removeItem(
+                    productId,
+                  );
+                  Navigator.of(context).pop();
+                },
+                color: Colors.green,
+              ),
+              FlatButton(
+                shape: StadiumBorder(),
+                color: Theme.of(context).accentColor,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancel'),
+              )
+            ],
+          ),
+        );
+        //   end Dialog Box
+      },
       onDismissed: (direction) {
         Provider.of<Cart>(context, listen: false).removeItem(productId);
       },

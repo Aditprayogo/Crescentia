@@ -63,7 +63,8 @@ class ProductItem extends StatelessWidget {
                 product.imageUrl,
               );
               final snackBar = SnackBar(
-                content: Text('Yay! A SnackBar!'),
+                duration: Duration(seconds: 1),
+                content: Text('Product has been added!'),
                 action: SnackBarAction(
                   label: 'Undo',
                   onPressed: () {
@@ -74,6 +75,7 @@ class ProductItem extends StatelessWidget {
               );
               // Find the Scaffold in the widget tree and use
               // it to show a SnackBar.
+              Scaffold.of(context).hideCurrentSnackBar();
               Scaffold.of(context).showSnackBar(snackBar);
             },
             color: Theme.of(context).accentColor,
