@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_application/icons/credit_icon_icons.dart';
 import 'package:shop_application/screens/orders_screen.dart';
 import 'package:shop_application/screens/user_products_screen.dart';
 
@@ -21,7 +22,10 @@ class AppDrawer extends StatelessWidget {
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.payment),
+            leading: Icon(
+              CreditIcon.credit_card_alt,
+              color: Colors.orange,
+            ),
             title: Text('Orders'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(

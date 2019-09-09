@@ -74,6 +74,10 @@ flutter:
     - family: Shop_cart
       fonts:
         - asset: assets/fonts/Shop_cart.ttf
+
+    - family: CreditIcon
+      fonts:
+        - asset: assets/fonts/CreditIcon.ttf
   #       
   #
   # For details regarding fonts from package dependencies,

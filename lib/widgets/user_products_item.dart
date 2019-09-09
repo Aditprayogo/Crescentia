@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:shop_application/screens/new_product_screen.dart';
 
 class UserProductsItem extends StatelessWidget {
+  final String id;
   final String title;
   final String imageUrl;
 
-  UserProductsItem({this.title, this.imageUrl});
+  UserProductsItem({this.id, this.title, this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class UserProductsItem extends StatelessWidget {
         child: ListTile(
           title: Text(title),
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(imageUrl),
+            backgroundImage: imageUrl == null ? null : NetworkImage(imageUrl),
           ),
           trailing: Container(
             width: 100,
@@ -26,7 +28,12 @@ class UserProductsItem extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.edit),
                   color: Theme.of(context).primaryColor,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(
+                      NewProductScreen.routeName,
+                      arguments: id,
+                    );
+                  },
                 ),
                 IconButton(
                   icon: Icon(Icons.delete),
