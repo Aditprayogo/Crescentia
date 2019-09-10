@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_application/providers/product.dart';
 
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
 class Products extends ChangeNotifier {
   List<Product> _items = [
     Product(
@@ -49,16 +53,34 @@ class Products extends ChangeNotifier {
     return _items.where((prod) => prod.isFavorite).toList();
   }
 
-  void addProduct(Product product) {
-    final newProduct = Product(
-      description: product.description,
-      id: DateTime.now().toString(),
-      price: product.price,
-      imageUrl: product.imageUrl,
-      title: product.title,
+  Future<void> addProduct(Product product) {
+    const url = 'https://crescentia-b307e.firebaseio.com/products.json';
+    return http
+        .post(
+      url,
+      body: json.encode(
+        {
+          'title': product.title,
+          'description': product.description,
+          'price': product.price,
+          'imageUrl': product.imageUrl,
+          'isFavorite': product.isFavorite,
+        },
+      ),
+    )
+        .then(
+      (response) {
+        final newProduct = Product(
+          description: product.description,
+          id: json.decode(response.body)['name'],
+          price: product.price,
+          imageUrl: product.imageUrl,
+          title: product.title,
+        );
+        _items.add(newProduct);
+        notifyListeners();
+      },
     );
-    _items.add(newProduct);
-    notifyListeners();
   }
 
   Product findById(String id) {
@@ -71,5 +93,10 @@ class Products extends ChangeNotifier {
       _items[prodIndex] = newProduct;
       notifyListeners();
     }
+  }
+
+  void deleteProduct(String id) {
+    _items.removeWhere((prod) => prod.id == id);
+    notifyListeners();
   }
 }
