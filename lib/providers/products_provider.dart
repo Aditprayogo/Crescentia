@@ -53,10 +53,21 @@ class Products extends ChangeNotifier {
     return _items.where((prod) => prod.isFavorite).toList();
   }
 
+  Future<void> fetchAndSetProducts() async {
+    const url = 'https://crescentia-b307e.firebaseio.com/products.json';
+
+    try {
+      final response = await http.get(url);
+      print(json.decode(response.body));
+    } catch (error) {
+      throw (error);
+    }
+  }
+
   Future<void> addProduct(Product product) async {
     //   async mengembalikan future
 
-    const url = 'https://crescentia-b307e.firebaseio.com/products';
+    const url = 'https://crescentia-b307e.firebaseio.com/products.json';
     // memberitahu dart bahwa tunggu kode ini selesai , baru boleh eksekusi code di bawahnya
     try {
       // try untuk catch error
