@@ -8,39 +8,39 @@ import 'package:http/http.dart' as http;
 
 class Products extends ChangeNotifier {
   List<Product> _items = [
-    Product(
-      id: 'p1',
-      title: 'G302',
-      description: 'Mouse Logitech G302!',
-      price: 29.99,
-      imageUrl:
-          'https://i5.walmartimages.com/asr/75ca782b-cd3b-4d67-a143-6d39259a5477_1.6e295ef14632472e60f093e395e7ee05.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
-    ),
-    Product(
-      id: 'p2',
-      title: 'Leaf Beast',
-      description:
-          'Leaf Beast Wireless Bluetooth Headphones with mic and 30 Hour Battery Life',
-      price: 59.99,
-      imageUrl:
-          'https://images-na.ssl-images-amazon.com/images/I/8131QjX7ThL._SX425_.jpg',
-    ),
-    Product(
-      id: 'p3',
-      title: 'Macbook',
-      description: 'Macbook pro',
-      price: 450.99,
-      imageUrl:
-          'https://cdnblob.moshi.com/uploadedfiles/photo/v3/productImages/791/01.jpg',
-    ),
-    Product(
-      id: 'p4',
-      title: 'Chroma',
-      description: 'Razer Cynosa Chroma Keyboard',
-      price: 49.99,
-      imageUrl:
-          'https://groundzeronet.com/wp-content/uploads/2017/10/blackwidow-tournament-edition-chroma-v2_c4cb1618450db16c.jpg',
-    ),
+    // Product(
+    //   id: 'p1',
+    //   title: 'G302',
+    //   description: 'Mouse Logitech G302!',
+    //   price: 29.99,
+    //   imageUrl:
+    //       'https://i5.walmartimages.com/asr/75ca782b-cd3b-4d67-a143-6d39259a5477_1.6e295ef14632472e60f093e395e7ee05.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
+    // ),
+    // Product(
+    //   id: 'p2',
+    //   title: 'Leaf Beast',
+    //   description:
+    //       'Leaf Beast Wireless Bluetooth Headphones with mic and 30 Hour Battery Life',
+    //   price: 59.99,
+    //   imageUrl:
+    //       'https://images-na.ssl-images-amazon.com/images/I/8131QjX7ThL._SX425_.jpg',
+    // ),
+    // Product(
+    //   id: 'p3',
+    //   title: 'Macbook',
+    //   description: 'Macbook pro',
+    //   price: 450.99,
+    //   imageUrl:
+    //       'https://cdnblob.moshi.com/uploadedfiles/photo/v3/productImages/791/01.jpg',
+    // ),
+    // Product(
+    //   id: 'p4',
+    //   title: 'Chroma',
+    //   description: 'Razer Cynosa Chroma Keyboard',
+    //   price: 49.99,
+    //   imageUrl:
+    //       'https://groundzeronet.com/wp-content/uploads/2017/10/blackwidow-tournament-edition-chroma-v2_c4cb1618450db16c.jpg',
+    // ),
   ];
 
   var _showFavoriteOnly = false;
@@ -58,7 +58,20 @@ class Products extends ChangeNotifier {
 
     try {
       final response = await http.get(url);
-      print(json.decode(response.body));
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final List<Product> loadedProduct = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProduct.add(Product(
+          id: prodId,
+          description: prodData['description'],
+          title: prodData['title'],
+          imageUrl: prodData['imageUrl'],
+          price: prodData['price'],
+          isFavorite: prodData['isFavorite'],
+        ));
+      });
+      _items = loadedProduct;
+      notifyListeners();
     } catch (error) {
       throw (error);
     }
