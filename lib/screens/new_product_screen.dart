@@ -82,18 +82,19 @@ class _NewProductScreenState extends State<NewProductScreen> {
     }
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     //   save form
     final isValid = _form.currentState.validate();
-
     if (!isValid) {
       return;
     }
 
     _form.currentState.save();
+
     setState(() {
       _isLoading = true;
     });
+
     // Jika kita punya id , dan tidak kosong
     if (_editedProduct.id != null) {
       Provider.of<Products>(context, listen: false).updateProduct(
@@ -105,15 +106,44 @@ class _NewProductScreenState extends State<NewProductScreen> {
       });
       Navigator.of(context).pop();
     } else {
-      // harus di bawah form state
-      Provider.of<Products>(context, listen: false)
-          .addProduct(_editedProduct)
-          .then((_) {
+      // buat nangkep ada error atau tidak
+      try {
+        //   menggunakan await untuk mengeksekusi code berikut setelah ini di kerjakan
+        await Provider.of<Products>(context, listen: false)
+            .addProduct(_editedProduct);
+      } catch (e) {
+        await showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: Text('An error occured'),
+            content: Text(
+              'Something went wrong',
+            ),
+            actions: <Widget>[
+              FlatButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                color: Theme.of(context).errorColor,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Close'),
+              )
+            ],
+          ),
+        );
+      } finally {
+        //   finnaly
+        //   bakal run , kalau try bakal gagal / tidak
         setState(() {
           _isLoading = false;
         });
         Navigator.of(context).pop();
-      });
+      }
     }
   }
 

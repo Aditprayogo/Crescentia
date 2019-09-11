@@ -53,34 +53,41 @@ class Products extends ChangeNotifier {
     return _items.where((prod) => prod.isFavorite).toList();
   }
 
-  Future<void> addProduct(Product product) {
-    const url = 'https://crescentia-b307e.firebaseio.com/products.json';
-    return http
-        .post(
-      url,
-      body: json.encode(
-        {
-          'title': product.title,
-          'description': product.description,
-          'price': product.price,
-          'imageUrl': product.imageUrl,
-          'isFavorite': product.isFavorite,
-        },
-      ),
-    )
-        .then(
-      (response) {
-        final newProduct = Product(
-          description: product.description,
-          id: json.decode(response.body)['name'],
-          price: product.price,
-          imageUrl: product.imageUrl,
-          title: product.title,
-        );
-        _items.add(newProduct);
-        notifyListeners();
-      },
-    );
+  Future<void> addProduct(Product product) async {
+    //   async mengembalikan future
+
+    const url = 'https://crescentia-b307e.firebaseio.com/products';
+    // memberitahu dart bahwa tunggu kode ini selesai , baru boleh eksekusi code di bawahnya
+    try {
+      // try untuk catch error
+      // code yang memungkinkan error
+      final response = await http.post(
+        url,
+        body: json.encode(
+          {
+            'title': product.title,
+            'description': product.description,
+            'price': product.price,
+            'imageUrl': product.imageUrl,
+            'isFavorite': product.isFavorite,
+          },
+        ),
+      );
+      final newProduct = Product(
+        description: product.description,
+        id: json.decode(response.body)['name'],
+        price: product.price,
+        imageUrl: product.imageUrl,
+        title: product.title,
+      );
+      _items.add(newProduct);
+
+      notifyListeners();
+    } catch (error) {
+      print(error);
+      throw error;
+    }
+    // invisibly wrap with then block
   }
 
   Product findById(String id) {
