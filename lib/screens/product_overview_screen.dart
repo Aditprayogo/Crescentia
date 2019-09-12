@@ -32,6 +32,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   }
 
   // run after widget fully initialized
+//   before build method
   @override
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
@@ -39,16 +40,51 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<Products>(context).fetchAndSetProducts().then((_) {
-        setState(() {
-          _isLoading = false;
+
+      try {
+        await Provider.of<Products>(context).fetchAndSetProducts().then((_) {
+          setState(() {
+            _isLoading = false;
+          });
         });
-      });
+      } catch (e) {
+        await showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: Text('An error occured'),
+            content: Text(
+              'Something went wrong',
+            ),
+            actions: <Widget>[
+              FlatButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                color: Theme.of(context).errorColor,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  setState(() {
+                    _isLoading = false;
+                  });
+                },
+                child: Text('Close'),
+              )
+            ],
+          ),
+        );
+      }
     }
 
     _isInit = false;
 
     super.didChangeDependencies();
+  }
+
+  Future<void> _refreshProduct(BuildContext context) async {
+    await Provider.of<Products>(context).fetchAndSetProducts();
   }
 
   @override
@@ -100,11 +136,14 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
         ],
       ),
       drawer: AppDrawer(),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : ProductsGrid(_showOnlyFavoriteData),
+      body: RefreshIndicator(
+        onRefresh: () => _refreshProduct(context),
+        child: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : ProductsGrid(_showOnlyFavoriteData),
+      ),
     );
   }
 }

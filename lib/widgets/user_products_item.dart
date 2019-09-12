@@ -12,6 +12,8 @@ class UserProductsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scaffold = Scaffold.of(context);
+    final navigator = Navigator.of(context);
     return Container(
       child: Card(
         elevation: 5,
@@ -74,10 +76,44 @@ class UserProductsItem extends StatelessWidget {
                               ),
                               color: Colors.green,
                               child: Text('Confirm'),
-                              onPressed: () {
-                                Provider.of<Products>(context)
-                                    .deleteProduct(id);
-                                Navigator.of(context).pop();
+                              onPressed: () async {
+                                try {
+                                  await Provider.of<Products>(context)
+                                      .deleteProduct(id);
+                                  navigator.pop();
+                                } catch (error) {
+                                  return showDialog<void>(
+                                    context: context,
+                                    barrierDismissible:
+                                        false, // user must tap button!
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Error'),
+                                        content: SingleChildScrollView(
+                                          child: ListBody(
+                                            children: <Widget>[
+                                              Text(
+                                                'Cant delete the product',
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .errorColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            child: Text('Oke'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
                               },
                             ),
                           ],

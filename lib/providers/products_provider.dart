@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_application/models/http_exception.dart';
 import 'package:shop_application/providers/product.dart';
 
 import 'dart:convert';
@@ -59,6 +60,7 @@ class Products extends ChangeNotifier {
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+
       final List<Product> loadedProduct = [];
       extractedData.forEach((prodId, prodData) {
         loadedProduct.add(Product(
@@ -70,7 +72,13 @@ class Products extends ChangeNotifier {
           isFavorite: prodData['isFavorite'],
         ));
       });
+
       _items = loadedProduct;
+
+      if (_items.isEmpty) {
+        return;
+      }
+
       notifyListeners();
     } catch (error) {
       throw (error);
@@ -118,16 +126,42 @@ class Products extends ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  void updateProduct(String id, Product newProduct) {
+  void updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
+      final url = 'https://crescentia-b307e.firebaseio.com/products/$id.json';
+
+      await http.patch(
+        url,
+        body: json.encode({
+          'title': newProduct.title,
+          'description': newProduct.description,
+          'imageUrl': newProduct.imageUrl,
+          'price': newProduct.price
+        }),
+      );
+
       _items[prodIndex] = newProduct;
       notifyListeners();
     }
   }
 
-  void deleteProduct(String id) {
-    _items.removeWhere((prod) => prod.id == id);
+  Future<void> deleteProduct(String id) async {
+    final url = 'https://crescentia-b307e.firebaseio.com/products/$id.json';
+
+    final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
+
+    var existingProduct = _items[existingProductIndex];
+
+    _items.removeAt(existingProductIndex);
     notifyListeners();
+
+    final response = await http.delete(url);
+    if (response.statusCode >= 400) {
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+      throw HttpException('Could not delete product');
+    }
+    existingProduct = null;
   }
 }

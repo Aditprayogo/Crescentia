@@ -97,13 +97,11 @@ class _NewProductScreenState extends State<NewProductScreen> {
 
     // Jika kita punya id , dan tidak kosong
     if (_editedProduct.id != null) {
-      Provider.of<Products>(context, listen: false).updateProduct(
+      await Provider.of<Products>(context, listen: false).updateProduct(
         _editedProduct.id,
         _editedProduct,
       );
-      setState(() {
-        _isLoading = false;
-      });
+
       Navigator.of(context).pop();
     } else {
       // buat nangkep ada error atau tidak
@@ -144,6 +142,9 @@ class _NewProductScreenState extends State<NewProductScreen> {
         });
         Navigator.of(context).pop();
       }
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
