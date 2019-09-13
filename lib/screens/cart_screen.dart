@@ -50,23 +50,7 @@ class CartScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                     // tombol order now
-                    FlatButton(
-                      color: Theme.of(context).accentColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      onPressed: () {
-                        //   buat menconver ke list , jadi di tambahin values
-                        Provider.of<Orders>(context, listen: false).addOrder(
-                          cart.items.values.toList(),
-                          cart.totalAmountCart,
-                        );
-
-                        cart.clear();
-                      },
-                      textColor: Theme.of(context).primaryTextTheme.title.color,
-                      child: Text('Order Now'),
-                    )
+                    OrderButton(cart: cart)
                   ],
                 ),
               ),
@@ -90,6 +74,52 @@ class CartScreen extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({
+    Key key,
+    @required this.cart,
+  }) : super(key: key);
+
+  final Cart cart;
+
+  @override
+  _OrderButtonState createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  var _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      color: Theme.of(context).accentColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: _isLoading ? CircularProgressIndicator() : Text('Order Now'),
+      onPressed: (widget.cart.totalAmountCart <= 0 || _isLoading)
+          ? null
+          : () async {
+              setState(() {
+                _isLoading = true;
+              });
+              //   buat menconver ke list , jadi di tambahin values
+              await Provider.of<Orders>(context, listen: false).addOrder(
+                widget.cart.items.values.toList(),
+                widget.cart.totalAmountCart,
+              );
+
+              setState(() {
+                _isLoading = false;
+              });
+
+              widget.cart.clear();
+            },
+      textColor: Theme.of(context).primaryTextTheme.title.color,
     );
   }
 }

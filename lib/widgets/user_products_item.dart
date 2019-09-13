@@ -12,7 +12,6 @@ class UserProductsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scaffold = Scaffold.of(context);
     final navigator = Navigator.of(context);
     return Container(
       child: Card(
@@ -80,7 +79,7 @@ class UserProductsItem extends StatelessWidget {
                                 try {
                                   await Provider.of<Products>(context)
                                       .deleteProduct(id);
-                                  navigator.pop();
+                                  navigator.pop(true);
                                 } catch (error) {
                                   return showDialog<void>(
                                     context: context,

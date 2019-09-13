@@ -112,6 +112,7 @@ class Products extends ChangeNotifier {
         imageUrl: product.imageUrl,
         title: product.title,
       );
+
       _items.add(newProduct);
 
       notifyListeners();
