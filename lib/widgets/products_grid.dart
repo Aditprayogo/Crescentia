@@ -15,23 +15,19 @@ class ProductsGrid extends StatelessWidget {
     final products =
         showFavorite ? productsData.favoriteProducts : productsData.items;
 
-    return productsData.items.isEmpty
-        ? Center(
-            child: Text('Data anda Kosong'),
-          )
-        : GridView.builder(
-            itemCount: products.length,
-            padding: const EdgeInsets.all(10),
-            itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
-              value: products[i],
-              child: ProductItem(),
-            ),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1.7 / 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 20,
-            ),
-          );
+    return GridView.builder(
+      itemCount: products.length,
+      padding: const EdgeInsets.all(10),
+      itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+        value: products[i],
+        child: ProductItem(),
+      ),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 1.7 / 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 20,
+      ),
+    );
   }
 }

@@ -93,6 +93,38 @@ class OrderButton extends StatefulWidget {
 class _OrderButtonState extends State<OrderButton> {
   var _isLoading = false;
 
+  void _showcontent() {
+    showDialog<Null>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return new AlertDialog(
+          elevation: 10,
+          title: new Text('Success'),
+          content: new SingleChildScrollView(
+            child: new ListBody(
+              children: <Widget>[
+                new Text('Berhasil menambahkan orders'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            new FlatButton(
+              color: Colors.green,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: new Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FlatButton(
@@ -108,10 +140,12 @@ class _OrderButtonState extends State<OrderButton> {
                 _isLoading = true;
               });
               //   buat menconver ke list , jadi di tambahin values
-              await Provider.of<Orders>(context, listen: false).addOrder(
+              await Provider.of<Orders>(context).addOrder(
                 widget.cart.items.values.toList(),
                 widget.cart.totalAmountCart,
               );
+
+              _showcontent();
 
               setState(() {
                 _isLoading = false;
