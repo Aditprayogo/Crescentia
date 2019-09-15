@@ -22,10 +22,14 @@ class OrderItem {
 class Orders extends ChangeNotifier {
   List<OrderItem> _orders = [];
 
+  final String authToken;
+
   List<OrderItem> get orders {
     //   biar di luar kelas ini , kita tidak bisa edit orders
     return [..._orders];
   }
+
+  Orders(this.authToken, this._orders);
 
   Future<void> fetchAndSetOrders() async {
     const url = 'https://crescentia-b307e.firebaseio.com/orders.json';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_application/providers/auth.dart';
 import 'package:shop_application/providers/cart.dart';
 import 'package:shop_application/providers/product.dart';
 import 'package:shop_application/screens/product_detail_screen.dart';
@@ -11,6 +12,8 @@ class ProductItem extends StatelessWidget {
     final product = Provider.of<Product>(context, listen: false);
 
     final cart = Provider.of<Cart>(context, listen: false);
+
+    final authData = Provider.of<Auth>(context, listen: false).token;
 
     //   agar mengatur border radius , jadi menggunaan clipreact
     return ClipRRect(
@@ -40,7 +43,7 @@ class ProductItem extends StatelessWidget {
                 product.isFavorite ? Icons.favorite : Icons.favorite_border,
               ),
               onPressed: () {
-                product.toggleFavoriteStatus();
+                product.toggleFavoriteStatus(authData);
               },
               color: Theme.of(context).accentColor,
             ),

@@ -10,6 +10,10 @@ import 'package:http/http.dart' as http;
 class Products extends ChangeNotifier {
   List<Product> _items = [];
 
+  final String authToken;
+
+  Products(this.authToken, this._items);
+
   var _showFavoriteOnly = false;
 
   List<Product> get items {
@@ -21,7 +25,8 @@ class Products extends ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    const url = 'https://crescentia-b307e.firebaseio.com/products.json';
+    final url =
+        'https://crescentia-b307e.firebaseio.com/products.json?auth=$authToken';
 
     try {
       final response = await http.get(url);
@@ -54,7 +59,8 @@ class Products extends ChangeNotifier {
   Future<void> addProduct(Product product) async {
     //   async mengembalikan future
 
-    const url = 'https://crescentia-b307e.firebaseio.com/products.json';
+    final url =
+        'https://crescentia-b307e.firebaseio.com/products.json?auth=$authToken';
     // memberitahu dart bahwa tunggu kode ini selesai , baru boleh eksekusi code di bawahnya
     try {
       // try untuk catch error
@@ -96,7 +102,8 @@ class Products extends ChangeNotifier {
   void updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      final url = 'https://crescentia-b307e.firebaseio.com/products/$id.json';
+      final url =
+          'https://crescentia-b307e.firebaseio.com/products/$id.json?auth=$authToken';
 
       await http.patch(
         url,
@@ -114,7 +121,8 @@ class Products extends ChangeNotifier {
   }
 
   Future<void> deleteProduct(String id) async {
-    final url = 'https://crescentia-b307e.firebaseio.com/products/$id.json';
+    final url =
+        'https://crescentia-b307e.firebaseio.com/products/$id.json?auth=$authToken';
 
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
 

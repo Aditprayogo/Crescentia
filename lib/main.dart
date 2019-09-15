@@ -22,42 +22,49 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
-          // set products provider
-          value: Products(),
+          // set Cart provider
+          value: Auth(),
+        ),
+        ChangeNotifierProxyProvider<Auth, Products>(
+          builder: (ctx, auth, previousProducts) => Products(
+            auth.token,
+            previousProducts == null ? [] : previousProducts.items,
+          ),
         ),
         ChangeNotifierProvider.value(
           // set Cart provider
           value: Cart(),
         ),
-        ChangeNotifierProvider.value(
-          // set Cart provider
-          value: Orders(),
-        ),
-        ChangeNotifierProvider.value(
-          // set Cart provider
-          value: Auth(),
-        ),
+        ChangeNotifierProxyProvider<Auth, Orders>(
+          builder: (ctx, auth, previousOrders) => Orders(
+            auth.token,
+            previousOrders == null ? [] : previousOrders.orders,
+          ),
+        )
       ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          backgroundColor: Colors.white54,
-          primarySwatch: Colors.green,
-          accentColor: Colors.deepOrange,
-          canvasColor: Color.fromRGBO(255, 254, 229, 1),
-          fontFamily: 'Lato',
+      child: Consumer<Auth>(
+        //   material app bakal rebuild kalau auth changes
+        builder: (context, auth, _) => MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            backgroundColor: Colors.white54,
+            primarySwatch: Colors.green,
+            accentColor: Colors.deepOrange,
+            canvasColor: Color.fromRGBO(255, 254, 229, 1),
+            fontFamily: 'Lato',
+          ),
+          home: auth.isAuth ? ProductOverviewScreen() : AuthScreen(),
+          color: Colors.green,
+          debugShowCheckedModeBanner: false,
+          initialRoute: '/',
+          routes: {
+            ProductDetailScreen.routeName: (context) => ProductDetailScreen(),
+            CartScreen.routeName: (context) => CartScreen(),
+            OrdersScreen.routeName: (context) => OrdersScreen(),
+            UserProductsScreen.routeName: (context) => UserProductsScreen(),
+            NewProductScreen.routeName: (context) => NewProductScreen(),
+          },
         ),
-        home: AuthScreen(),
-        color: Colors.green,
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        routes: {
-          ProductDetailScreen.routeName: (context) => ProductDetailScreen(),
-          CartScreen.routeName: (context) => CartScreen(),
-          OrdersScreen.routeName: (context) => OrdersScreen(),
-          UserProductsScreen.routeName: (context) => UserProductsScreen(),
-          NewProductScreen.routeName: (context) => NewProductScreen(),
-        },
       ),
     );
   }
