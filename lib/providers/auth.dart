@@ -9,9 +9,10 @@ class Auth extends ChangeNotifier {
   DateTime _expiryDate;
   String _userId;
 
-  Future<void> signup(String email, String password) async {
-    const url =
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBdnmaPx8dePzP3BypyhSuDB_J6CjwT7lU';
+  Future<void> _authenticate(
+      String email, String password, String urlSegment) async {
+    final url =
+        'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyBdnmaPx8dePzP3BypyhSuDB_J6CjwT7lU';
 
     final response = await http.post(
       url,
@@ -25,5 +26,13 @@ class Auth extends ChangeNotifier {
     );
 
     print(json.decode(response.body));
+  }
+
+  Future<void> signup(String email, String password) async {
+    return _authenticate(email, password, 'signUp');
+  }
+
+  Future<void> signin(String email, String password) async {
+    return _authenticate(email, password, 'signInWithPassword');
   }
 }
