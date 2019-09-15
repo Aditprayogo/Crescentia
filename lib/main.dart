@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shop_application/providers/auth.dart';
 import 'package:shop_application/providers/cart.dart';
 import 'package:shop_application/providers/orders.dart';
 import 'package:shop_application/providers/products_provider.dart';
+import 'package:shop_application/screens/auth-screen.dart';
 import 'package:shop_application/screens/cart_screen.dart';
 import 'package:shop_application/screens/new_product_screen.dart';
 import 'package:shop_application/screens/orders_screen.dart';
@@ -31,6 +33,10 @@ class MyApp extends StatelessWidget {
           // set Cart provider
           value: Orders(),
         ),
+        ChangeNotifierProvider.value(
+          // set Cart provider
+          value: Auth(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -41,7 +47,7 @@ class MyApp extends StatelessWidget {
           canvasColor: Color.fromRGBO(255, 254, 229, 1),
           fontFamily: 'Lato',
         ),
-        home: ProductOverviewScreen(),
+        home: AuthScreen(),
         color: Colors.green,
         debugShowCheckedModeBanner: false,
         initialRoute: '/',

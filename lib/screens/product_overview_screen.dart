@@ -131,7 +131,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                 value: FilterOption.All,
               ),
             ],
-            icon: Icon(Icons.more_vert),
+            icon: Icon(Icons.arrow_drop_down),
           ),
         ],
       ),
