@@ -9,13 +9,14 @@ class UserProductsScreen extends StatelessWidget {
   static const routeName = '/user-products';
 
   Future<void> _refreshProduct(BuildContext context) async {
-    await Provider.of<Products>(context).fetchAndSetProducts();
+    await Provider.of<Products>(context, listen: false)
+        .fetchAndSetProducts(true);
   }
 
   @override
   Widget build(BuildContext context) {
     // final productsData = Provider.of<Products>(context);
-
+    print('infinte loop');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Products'),
@@ -32,21 +33,29 @@ class UserProductsScreen extends StatelessWidget {
         ],
       ),
       drawer: AppDrawer(),
-      body: RefreshIndicator(
-        onRefresh: () => _refreshProduct(context),
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Consumer<Products>(
-            builder: (context, products, child) => ListView.builder(
-              itemCount: products.items.length,
-              itemBuilder: (context, i) => UserProductsItem(
-                id: products.items[i].id,
-                title: products.items[i].title,
-                imageUrl: products.items[i].imageUrl,
-              ),
-            ),
-          ),
-        ),
+      body: FutureBuilder(
+        future: _refreshProduct(context),
+        builder: (ctx, snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : RefreshIndicator(
+                    onRefresh: () => _refreshProduct(context),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Consumer<Products>(
+                        builder: (context, products, child) => ListView.builder(
+                          itemCount: products.items.length,
+                          itemBuilder: (context, i) => UserProductsItem(
+                            id: products.items[i].id,
+                            title: products.items[i].title,
+                            imageUrl: products.items[i].imageUrl,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
       ),
     );
   }

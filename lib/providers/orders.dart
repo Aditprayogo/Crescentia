@@ -32,7 +32,8 @@ class Orders extends ChangeNotifier {
   Orders(this.authToken, this._orders);
 
   Future<void> fetchAndSetOrders() async {
-    const url = 'https://crescentia-b307e.firebaseio.com/orders.json';
+    final url =
+        'https://crescentia-b307e.firebaseio.com/orders.json?auth=$authToken';
 
     final response = await http.get(url);
 
@@ -71,7 +72,8 @@ class Orders extends ChangeNotifier {
   }
 
   Future<void> addOrder(List<CartItem> cartProduct, double total) async {
-    const url = 'https://crescentia-b307e.firebaseio.com/orders.json';
+    final url =
+        'https://crescentia-b307e.firebaseio.com/orders.json?auth=$authToken';
 
     final timestamp = DateTime.now();
 

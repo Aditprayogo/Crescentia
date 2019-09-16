@@ -12,7 +12,13 @@ class Products extends ChangeNotifier {
 
   final String authToken;
 
-  Products(this.authToken, this._items);
+  final String userId;
+
+  Products(
+    this.authToken,
+    this.userId,
+    this._items,
+  );
 
   var _showFavoriteOnly = false;
 
@@ -24,9 +30,11 @@ class Products extends ChangeNotifier {
     return _items.where((prod) => prod.isFavorite).toList();
   }
 
-  Future<void> fetchAndSetProducts() async {
-    final url =
-        'https://crescentia-b307e.firebaseio.com/products.json?auth=$authToken';
+  Future<void> fetchAndSetProducts([bool filterUserProduct = false]) async {
+    final filterString =
+        filterUserProduct ? 'orderBy="userId"&equalTo="$userId"' : "";
+    var url =
+        'https://crescentia-b307e.firebaseio.com/products.json?auth=$authToken&$filterString';
 
     try {
       final response = await http.get(url);
@@ -35,8 +43,16 @@ class Products extends ChangeNotifier {
       if (extractedData == null) {
         return;
       }
+      // di ovverwrite
+      url =
+          'https://crescentia-b307e.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
+
+      final favoriteResponse = await http.get(url);
+
+      final favoriteData = json.decode(favoriteResponse.body);
 
       final List<Product> loadedProduct = [];
+
       extractedData.forEach((prodId, prodData) {
         loadedProduct.add(Product(
           id: prodId,
@@ -44,7 +60,8 @@ class Products extends ChangeNotifier {
           title: prodData['title'],
           imageUrl: prodData['imageUrl'],
           price: prodData['price'],
-          isFavorite: prodData['isFavorite'],
+          isFavorite:
+              favoriteData == null ? false : favoriteData[prodId] ?? false,
         ));
       });
 
@@ -73,7 +90,7 @@ class Products extends ChangeNotifier {
             'description': product.description,
             'price': product.price,
             'imageUrl': product.imageUrl,
-            'isFavorite': product.isFavorite,
+            'userId': userId,
           },
         ),
       );
