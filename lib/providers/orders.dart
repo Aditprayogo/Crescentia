@@ -24,16 +24,22 @@ class Orders extends ChangeNotifier {
 
   final String authToken;
 
+  final String userId;
+
   List<OrderItem> get orders {
     //   biar di luar kelas ini , kita tidak bisa edit orders
     return [..._orders];
   }
 
-  Orders(this.authToken, this._orders);
+  Orders(
+    this.authToken,
+    this.userId,
+    this._orders,
+  );
 
   Future<void> fetchAndSetOrders() async {
     final url =
-        'https://crescentia-b307e.firebaseio.com/orders.json?auth=$authToken';
+        'https://crescentia-b307e.firebaseio.com/orders/$userId.json?auth=$authToken';
 
     final response = await http.get(url);
 
@@ -73,7 +79,7 @@ class Orders extends ChangeNotifier {
 
   Future<void> addOrder(List<CartItem> cartProduct, double total) async {
     final url =
-        'https://crescentia-b307e.firebaseio.com/orders.json?auth=$authToken';
+        'https://crescentia-b307e.firebaseio.com/orders/$userId.json?auth=$authToken';
 
     final timestamp = DateTime.now();
 

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-class Shop_cart {
-  Shop_cart._();
+class ShopcCart {
+  ShopcCart._();
 
   static const _kFontFam = 'Shop_cart';
 

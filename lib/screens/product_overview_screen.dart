@@ -106,7 +106,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                 Navigator.of(context).pushNamed(CartScreen.routeName);
               },
               icon: Icon(
-                Shop_cart.basket,
+                ShopcCart.basket,
               ),
             ),
           ),
