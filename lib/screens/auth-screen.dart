@@ -137,10 +137,41 @@ class _AuthCardState extends State<AuthCard> {
     try {
       if (_authMode == AuthMode.Login) {
         // Log user in
-        await Provider.of<Auth>(context, listen: false).signin(
+        Provider.of<Auth>(context, listen: false)
+            .signin(
           _authData['email'],
           _authData['password'],
-        );
+        )
+            .then((_) {
+          return showDialog<void>(
+            context: context,
+            barrierDismissible: false, // user must tap button!
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Login notification'),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      Text('You Are Now Logged In'),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    color: Colors.green,
+                    child: Text('Oke'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        });
       } else {
         // Sign user up
         await Provider.of<Auth>(context, listen: false).signup(
