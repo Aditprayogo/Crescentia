@@ -22,6 +22,7 @@ dependencies:
 
   intl: ^0.16.0
   http: ^0.12.0+2
+  shared_preferences: ^0.5.3+4
     
   provider: 3.0.0
 

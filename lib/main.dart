@@ -10,6 +10,7 @@ import 'package:shop_application/screens/orders_screen.dart';
 import 'package:shop_application/screens/product_detail_screen.dart';
 import 'package:shop_application/screens/product_overview_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_application/screens/splash_screen.dart';
 import 'package:shop_application/screens/user_products_screen.dart';
 
 void main() => runApp(MyApp());
@@ -55,7 +56,16 @@ class MyApp extends StatelessWidget {
             canvasColor: Color.fromRGBO(255, 254, 229, 1),
             fontFamily: 'Lato',
           ),
-          home: auth.isAuth ? ProductOverviewScreen() : AuthScreen(),
+          home: auth.isAuth
+              ? ProductOverviewScreen()
+              : FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (ctx, authDataSnapShot) =>
+                      authDataSnapShot.connectionState ==
+                              ConnectionState.waiting
+                          ? SplashScreen()
+                          : AuthScreen(),
+                ),
           color: Colors.green,
           debugShowCheckedModeBanner: false,
           initialRoute: '/',

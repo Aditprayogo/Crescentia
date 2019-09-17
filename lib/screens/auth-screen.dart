@@ -70,7 +70,7 @@ class AuthScreen extends StatelessWidget {
                     ),
                   ),
                   Flexible(
-                    flex: deviceSize.width > 600 ? 2 : 1,
+                    flex: deviceSize.width > 600 ? 2 : 2,
                     child: AuthCard(),
                   ),
                 ],
@@ -137,41 +137,10 @@ class _AuthCardState extends State<AuthCard> {
     try {
       if (_authMode == AuthMode.Login) {
         // Log user in
-        Provider.of<Auth>(context, listen: false)
-            .signin(
+        await Provider.of<Auth>(context, listen: false).signin(
           _authData['email'],
           _authData['password'],
-        )
-            .then((_) {
-          return showDialog<void>(
-            context: context,
-            barrierDismissible: false, // user must tap button!
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('Login notification'),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: <Widget>[
-                      Text('You Are Now Logged In'),
-                    ],
-                  ),
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    color: Colors.green,
-                    child: Text('Oke'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        });
+        );
       } else {
         // Sign user up
         await Provider.of<Auth>(context, listen: false).signup(
@@ -226,11 +195,11 @@ class _AuthCardState extends State<AuthCard> {
     final deviceSize = MediaQuery.of(context).size;
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(20.0),
       ),
       elevation: 8.0,
       child: Container(
-        height: _authMode == AuthMode.Signup ? 320 : 260,
+        height: _authMode == AuthMode.Signup ? 700 : 360,
         constraints:
             BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
         width: deviceSize.width * 0.75,
@@ -240,6 +209,9 @@ class _AuthCardState extends State<AuthCard> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
+                FlutterLogo(
+                  size: 40,
+                ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'E-Mail'),
                   keyboardType: TextInputType.emailAddress,

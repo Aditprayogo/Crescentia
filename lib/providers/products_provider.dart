@@ -33,6 +33,7 @@ class Products extends ChangeNotifier {
   Future<void> fetchAndSetProducts([bool filterUserProduct = false]) async {
     final filterString =
         filterUserProduct ? 'orderBy="userId"&equalTo="$userId"' : "";
+
     var url =
         'https://crescentia-b307e.firebaseio.com/products.json?auth=$authToken&$filterString';
 

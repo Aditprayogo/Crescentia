@@ -51,8 +51,9 @@ class AppDrawer extends StatelessWidget {
             title: Text('Logout'),
             onTap: () {
               Navigator.of(context).pop();
+              Navigator.of(context).pushReplacementNamed('/');
 
-              Provider.of<Auth>(context).logout().then((_) {
+              Provider.of<Auth>(context, listen: false).logout().then((_) {
                 return showDialog<void>(
                   context: context,
                   barrierDismissible: false, // user must tap button!
